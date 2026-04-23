@@ -2,111 +2,144 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>سلة المشتريات</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلة المشتريات | متجر لولا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        :root {
+            /* الألوان الدقيقة لمتجر لولا (سلة) */
+            --salla-primary: #8a3c8e; /* اللون البنفسجي لأزرار الكمية */
+            --salla-secondary: #c265a0; /* اللون الوردي لزر إتمام الطلب وأيقونة الحذف */
+            --bg-body: #f8f8f8;
+            --border-color: #eee;
+        }
+
         * { box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #fff;
+            background-color: var(--bg-body);
             margin: 0;
             padding: 0;
             color: #333;
         }
 
-        /* رأس الصفحة */
-        .header {
+        /* حاوية السلة بالكامل */
+        .cart-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            min-height: 100vh;
+            padding-bottom: 120px; /* لمساحة الزر العائم */
+        }
+
+        /* شريط العنوان العلوي (طبق الأصل) */
+        .cart-header {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #f0f0f0;
+            justify-content: center; /* توسيط النص */
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
             background: #fff;
+            position: relative;
         }
-        .header h1 { font-size: 18px; margin: 0; flex-grow: 1; text-align: center; }
-        .back-btn { font-size: 20px; color: #000; text-decoration: none; }
+        .cart-header h1 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 700;
+        }
+        .back-icon {
+            position: absolute;
+            right: 20px; /* أيقونة العودة على اليمين */
+            font-size: 20px;
+            color: #000;
+        }
 
-        .container { padding: 15px; max-width: 500px; margin: auto; }
+        .container { padding: 15px; }
 
-        /* منطقة المنتج - تعديل التوزيع */
+        /* منطقة المنتج - تعديل دقيق للمظهر */
         .cart-item {
             display: flex;
-            flex-direction: row-reverse; /* لجعل الصورة على اليسار والكلام على اليمين */
             padding: 20px 0;
             border-bottom: 1px solid #eee;
-            align-items: flex-start;
+            align-items: center;
+            position: relative;
         }
+
+        .product-img-box {
+            width: 80px;
+            height: 80px;
+            background: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            margin-right: 15px;
+        }
+        .product-img-box span { color: #ccc; font-size: 14px; }
 
         .product-info {
             flex: 1;
             text-align: right;
             padding-left: 10px;
         }
+        .product-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .product-price { font-weight: 700; font-size: 16px; margin-bottom: 10px; }
 
-        .product-img-box {
-            width: 100px;
-            height: 100px;
-            background: #f8f8f8;
-            border-radius: 12px;
+        /* أيقونة الحذف الدائرية الوردية (التي طلبتها في الصورة الأولى) */
+        .remove-icon {
+            color: var(--salla-secondary);
+            font-size: 18px;
+            border: 1px solid #ffccd5; /* حدود وردية فاتحة */
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #eee;
+            margin-right: 15px;
+            transition: 0.3s;
         }
+        .remove-icon:hover { background: #fff1f3; }
 
-        .product-img-box img { max-width: 100%; border-radius: 12px; }
-
-        .product-title { font-weight: 700; font-size: 15px; margin-bottom: 5px; display: block; }
-        .product-price { font-weight: 700; font-size: 16px; margin-bottom: 15px; }
-
-        /* أزرار الكمية */
-        .controls-row {
+        /* عداد الكمية البنفسجي (مطابق للصورة) */
+        .qty-controls {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .qty-box {
-            display: flex;
-            align-items: center;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             border-radius: 50px;
-            padding: 3px 15px;
+            background: #fff;
+            overflow: hidden;
+            width: fit-content;
         }
-        .qty-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 0 10px; }
-        .qty-num { font-weight: bold; padding: 0 10px; }
-
-        .remove-link { color: #d32f2f; font-size: 13px; text-decoration: none; font-weight: 600; }
-
-        /* الكوبون */
-        .coupon-area {
-            display: flex;
-            margin: 20px 0;
-            gap: 10px;
-        }
-        .coupon-input {
-            flex: 1;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: right;
-            background: #fdfdfd;
-        }
-        .apply-btn {
-            background: #eeeeee;
+        .qty-btn {
+            background: none;
             border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: 600;
+            font-size: 18px;
+            padding: 8px 15px;
+            cursor: pointer;
+            color: var(--salla-primary); /* اللون البنفسجي */
+            font-weight: bold;
+        }
+        .qty-num {
+            font-weight: 700;
+            padding: 0 10px;
+            font-size: 14px;
         }
 
-        /* الملخص */
-        .summary-card {
-            background: #f9f9f9;
-            border-radius: 15px;
+        /* ملخص الحساب العائم (التوزيع المطابق لمتجر لولا الحقيقي) */
+        .cart-summary {
+            background: #fff;
+            border-top: 1px solid var(--border-color);
             padding: 20px;
             margin-top: 20px;
         }
@@ -116,7 +149,7 @@
             margin-bottom: 12px;
             font-size: 14px;
         }
-        .total-item {
+        .final-total {
             border-top: 1px dashed #ccc;
             padding-top: 15px;
             margin-top: 15px;
@@ -124,83 +157,82 @@
             font-size: 18px;
         }
 
-        /* زر الدفع السفلي */
-        .footer-btn-container {
+        /* زر إتمام الطلب الوردي العائم */
+        .checkout-bar {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            padding: 15px;
+            right: 0;
             background: #fff;
-            border-top: 1px solid #eee;
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: center;
         }
-        .main-btn {
-            background: #000;
+        .btn-checkout {
+            background: var(--salla-secondary); /* اللون الوردي */
             color: #fff;
             width: 100%;
+            max-width: 500px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 18px 25px;
             border-radius: 12px;
             border: none;
             font-size: 16px;
             font-weight: 700;
-            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i></a>
-        <h1>سلة المشتريات</h1>
-    </div>
+    <div class="cart-wrapper">
+        <div class="cart-header">
+            <a href="#" class="back-icon"><i class="fas fa-arrow-right"></i></a>
+            <h1>سلة المشتريات</h1>
+        </div>
 
-    <div class="container">
-        <div class="cart-item">
-            <div class="product-img-box">
-               <span style="color:#ccc">Product</span>
-            </div>
-            <div class="product-info">
-                <span class="product-title">اسم المنتج كما يظهر في المتجر</span>
-                <div class="product-price">180 ر.س</div>
-                
-                <div class="controls-row">
-                    <div class="qty-box">
+        <div class="container">
+            <div class="cart-item">
+                <div class="remove-icon"><i class="fas fa-trash-alt"></i></div>
+                <div class="product-img-box">
+                    <span>Product</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-title">اسم المنتج كما يظهر في المتجر</span>
+                    <div class="product-price">180 ر.س</div>
+                    
+                    <div class="qty-controls">
                         <button class="qty-btn">+</button>
                         <span class="qty-num">1</span>
                         <button class="qty-btn">-</button>
                     </div>
-                    <a href="#" class="remove-link">حذف المنتج</a>
                 </div>
             </div>
-        </div>
 
-        <div class="coupon-area">
-            <input type="text" class="coupon-input" placeholder="هل لديك كود خصم؟">
-            <button class="apply-btn">تطبيق</button>
-        </div>
+            <div class="cart-summary">
+                <div class="summary-item">
+                    <span>مجموع المنتجات (1)</span>
+                    <span>180 ر.س</span>
+                </div>
+                <div class="summary-item">
+                    <span>الشحن</span>
+                    <span style="color: #2e7d32; font-weight: 600;">مجاني</span>
+                </div>
+                <div class="summary-item final-total">
+                    <span>الإجمالي</span>
+                    <span>180 ر.س</span>
+                </div>
+            </div>
 
-        <div class="summary-card">
-            <div class="summary-item">
-                <span>مجموع المنتجات</span>
-                <span>180 ر.س</span>
-            </div>
-            <div class="summary-item">
-                <span>الشحن</span>
-                <span style="color: #2e7d32; font-weight: 600;">مجاني</span>
-            </div>
-            <div class="summary-item total-item">
-                <span>الإجمالي النهائي</span>
-                <span>180 ر.س</span>
-            </div>
         </div>
-
-        <div style="height: 100px;"></div>
     </div>
 
-    <div class="footer-btn-container">
-        <button class="main-btn">
+    <div class="checkout-bar">
+        <button class="btn-checkout">
             <span>إتمام الطلب</span>
             <span>180 ر.س</span>
         </button>
